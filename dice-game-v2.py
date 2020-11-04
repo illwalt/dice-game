@@ -1,6 +1,7 @@
 from random import randint
 from time import sleep
 import sys
+import operator
 
 
 rounds = 0
@@ -9,39 +10,89 @@ score2 = 0
 
 
 # ------------Welcome screen--------------------------------
-print("Welcome to Dice Game")
-print("please add two players")
+print("--------Welcome to Dice Game---------")
+print("1. Please enter 'n' to add new player")
+print("2. Please enter 'p' to play Dice Game")
+print("3. Please enter 's' to display scores")
+print("4. Please enter 'q' to quit game")
 
-# ------------setting up players----------------------------
+menu = input("\nPlease select option from menu: ").lower()
+while menu not in ["n", "p", "s", "q"]:
+    menu = input("\nPlease select option from menu: ").lower()
+
+if menu == "q":
+    print("You have ended the game")
+    sys.exit()
+
+if menu == "n":
+    username = input("Please enter username: ")
+    pword1 = input("Please enter password: ")
+    pword2 = input("Please re-enter password: ")
+    if pword1 == pword2:
+        print("User account successfully created")
+        file = open ( "users.txt", "a" )
+        file.write("username: ")
+        file.write(username)
+        file.write(" ")
+        file.write("password: ")
+        file.write(pword2)
+        file.write("\n")
+        file.close()
+        print("\nPlease select option from menu: ")
+        menu = input("").lower()
+    if pword1 != pword2:
+        correct_pword = (pword1)
+        while True:
+            print("Passwords did noy match")
+            pword = input("Enter password again: ")
+            if pword == correct_pword:
+                print("Correct password has been entered")
+                f = open ("users.txt", "a+" )
+                f.write("username: ")
+                f.write(username)
+                f.write(" ")
+                f.write("password: ")
+                f.write(correct_pword)
+                f.write("\n")
+                f.close()
+                print("\nPlease select option from menu: ")
+                menu = input("").lower()
+            else:
+                print('Incorrect password ')
 
 # create players list to store player names
 players = []
+check_failed = True
 
-# loop to setup players loop will keep running till number of player is 2
-while len(players) < 2:
-    # get players name
-    # set player name to title case so it matches name is list
-    name = input("Enter player name: (type q to quit game) ")
-    # allows user to quit out of game
-    if name == "q" or name == "quit":
-        print("You have ended the game")
-        sys.exit()
-    # List with valid player names
-    user_name = ["tommy", "luke", "jasiah"]
-    #  check if names are valid and add to players list
-    if name in user_name:
-        players.append(name)
-        print(f"{name} is a valid player")
-        #  check if there are two player and print the players names
-        if len(players) == 2:
-            print(f"Player #1 is {players[0]}\nPlayer #2 is {players[1]}")
-            print("Get ready to play Dice Game")
-    #  tells you that the name you have enetered is not valid
-    else:
-        print(f"{name} is not a valid player try again.")
+while check_failed:
+    print("Could player 1 enter their username and password")
+    username1 = input("Please enter your username ")
+    password = input("Please enter your password ")
+    with open("users.txt","r") as player_file:
+        for line in player_file:
+            if (f"username: {username1} password: {password}") == line.strip():
+                players.append(username1.title())
+                print(f"Player #1 is {players[0]}")
+                check_failed = False
+                check_failed = True
+                while check_failed:
+                    print("Could player 2 enter their username and password")
+                    username2 = input("Please enter your username ")
+                    password = input("Please enter your password ")
+                    with open("users.txt","r") as player_file:
+                        for line in player_file:
+                            if (f"username: {username2} password: {password}") == line.strip():
+                                players.append(username2.title())
+                                print(f"Player #2 is {players[1]}")
+                                check_failed = False
+                                sleep(2)
+                                print("-------------------------------------------")
+                                print("Dice Game Starting.......")
+                                print("-------------------------------------------")
+                                sleep(2)
 
 # ------------Dice Game-------------------------------------
-while rounds < 1:
+while rounds < 5:
     # player one
     print(f"\n--------{players[0].title()} Rolling Round #{rounds + 1}-----\n")
     dice1 = randint(1, 6)
@@ -63,7 +114,7 @@ while rounds < 1:
         total -= 5
         print("Subtracting 5 points for odd total.")
     print(f"Round total is: {total}")
-    score1 += total # score1 = 100
+    score1 += total  # score1 = 100
     print(f"Player score is: {score1}")
     if score1 <= 0:
         print("-------------------------------------------")
@@ -81,6 +132,8 @@ while rounds < 1:
     sleep(2)
     total = dice1 + dice2
     if dice1 == dice2:
+        print("Adding 10 points for even total.")
+        total += 10
         print("Rolling dice again for double")
         dice3 = randint(1, 6)
         print(f"Extra roll total: {dice3}")
@@ -92,7 +145,7 @@ while rounds < 1:
         total -= 5
         print("Subtracting 5 points for odd total.")
     print(f"Round total is: {total}")
-    score2 += total # score2 = 100
+    score2 += total  # score2 = 100
     print(f"Player score is: {score2}")
     if score2 <= 0:
         print("-------------------------------------------")
@@ -110,12 +163,14 @@ print(f"Total score for player 2 - {players[1]} is", score2)
 print("-------------------------------------------")
 
 # ------------Tie break-------------------------------------
-# no_win = "y"
+no_win = True
 
-if score1 == score2:
+while no_win:
+    if score1 == score2:
     print("Drawn Game")
     print("Each player rolls one die again to see who scores the highest")
-# while no_win == "y"
+
+    tie_break = input("Press \"y\" to roll: ")
     player1 = input("Press \"y\" to roll: ")
     print(player1)
     if player1 == "y":
