@@ -90,7 +90,7 @@ if ens == "e":
                                     time.sleep(1)
                                     print("Welcome to the dice game")
                                     time.sleep(1)
-                                    while rounds < 5:
+                                    while rounds < 1:
                                         total_score2 = total_score2 + playerTwoPoints
                                         total_score1 = total_score1 + playerOnePoints
                                         rounds = rounds + 1

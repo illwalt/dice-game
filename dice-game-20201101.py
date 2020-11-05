@@ -41,7 +41,7 @@ while len(players) < 2:
         print(f"{name} is not a valid player try again.")
 
 # ------------Dice Game-------------------------------------
-while rounds < 1:
+while rounds < 5:
     # player one
     print(f"\n--------{players[0].title()} Rolling Round #{rounds + 1}-----\n")
     dice1 = randint(1, 6)
