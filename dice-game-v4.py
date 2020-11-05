@@ -1,7 +1,9 @@
 from random import randint
 from time import sleep
+from datetime import datetime
 import sys
 import operator
+
 
 # ------------Welcome screen--------------------------------
 print("--------Welcome to Dice Game---------")
@@ -87,12 +89,17 @@ while check_failed:
 
 # ------------Dice Game-------------------------------------
 rounds = 0
+date = datetime.now()
+game_date = (date.strftime("%d-%b-%Y %H:%M:%S"))
+username1 = username1.title()
+username2 = username2.title()
+
 
 while rounds < 1:
     score1 = 0
     score2 = 0
     # player one
-    print(f"\n--------{username1.title()} Rolling Round #{rounds + 1}-----\n")
+    print(f"\n--------{username1} Rolling Round #{rounds + 1}-----\n")
     dice1 = randint(1, 6)
     print(f"Dice #1 this round is: {dice1}")
     sleep(2)
@@ -114,7 +121,7 @@ while rounds < 1:
         total -= 5
         print("Subtracting 5 points for odd total.")
     print(f"Round total is: {total}")
-    score1 += total
+    score1 = 100
     print(f"Player score is: {score1}")
     if score1 <= 0:
         print("-------------------------------------------")
@@ -123,7 +130,7 @@ while rounds < 1:
         sys.exit()
 
     # player 2
-    print(f"\n--------{username2.title()} Rolling Round #{rounds + 1}-----\n")
+    print(f"\n--------{username2} Rolling Round #{rounds + 1}-----\n")
     dice1 = randint(1, 6)
     print(f"Dice #1 this round is: {dice1}")
     sleep(2)
@@ -145,7 +152,7 @@ while rounds < 1:
         total -= 5
         print("Subtracting 5 points for odd total.")
     print(f"Round total is: {total}")
-    score2 += total
+    score2 = 100
     print(f"Player score is: {score2}")
     if score2 <= 0:
         print("-------------------------------------------")
@@ -164,7 +171,6 @@ print("-------------------------------------------")
 
 # ------------Tie break-------------------------------------
 
-
 if score1 == score2:
     print("Drawn Game")
     print("Each player rolls one die again to see who scores the highest")
@@ -177,10 +183,10 @@ if score1 == score2:
             print("\nrolling......")
             sleep(2)
             dice_tb1 = randint(1, 6)
-            print(f"\n--------{username1.title()} Tie Break-----\n")
+            print(f"\n--------{username1} Tie Break-----\n")
             # print(f"this round is: {dice_tb1}")
             score1_tb = dice_tb1
-            print(f"Dice #1 this round is: {score1_tb}")
+            print(f"{username1} rolled: {score1_tb}")
             if score1_tb % 2 == 0:
                 score1_tb += 10
                 print("Adding 10 points for even total.")
@@ -191,19 +197,29 @@ if score1 == score2:
                 # print(f"Round total is: {score1_tb}")
             # score1_tb = 6
             # print(score1_tb)
-            print(f"{players[0]} score is: {score1_tb}")
+            print(f"{username1} score is: {score1_tb}")
             if score1_tb <= 0:
                 print("-------------------------------------------")
                 print(f"{username1} you have lost the game")
                 print("-------------------------------------------")
+                file = open("scores.txt","a")
+                file.write(username2)
+                file.write(" scored ")
+                file.write(str(score2))
+                file.write(" points ")
+                file.write("on ")
+                file.write(game_date)
+                file.write(" after a tie break")
+                file.write("\n")
+                file.close()
                 sys.exit()
 
         print("\nrolling......")
         sleep(2)
         dice_tb2 = randint(1, 6)
-        print(f"\n--------{players[1].title()} Tie Break-----\n")
+        print(f"\n--------{username2} Tie Break-----\n")
         score2_tb = dice_tb2
-        print(f"Dice #1 this round is: {score2_tb}")
+        print(f"{username2} rolled: {score2_tb}")
         if score2_tb % 2 == 0:
             score2_tb += 10
             print("Adding 10 points for even total.")
@@ -213,11 +229,21 @@ if score1 == score2:
             print("Subtracting 5 points for odd total.")
             # print(f"Round total is: {score2_tb}")
         # score2_tb = 6
-        print(f"{players[1]} score is: {score2_tb}")
+        print(f"{username2} score is: {score2_tb}")
         if score2_tb <= 0:
             print("-------------------------------------------")
             print(f"{username2} you have lost the game")
             print("-------------------------------------------")
+            file = open("scores.txt","a")
+            file.write(username1)
+            file.write(" scored ")
+            file.write(str(score2))
+            file.write(" points ")
+            file.write("on ")
+            file.write(game_date)
+            file.write(" after a tie break")
+            file.write("\n")
+            file.close()
             sys.exit()
         if score1_tb == score2_tb:
             print("-------------------------------------------")
@@ -228,29 +254,53 @@ if score1 == score2:
             print("-------------------------------------------")
             print(f"{username1} is the winner of this game.")
             print("-------------------------------------------")
+            file = open("scores.txt","a")
+            file.write(username1)
+            file.write(" scored ")
+            file.write(str(score1))
+            file.write(" points ")
+            file.write("on ")
+            file.write(game_date)
+            file.write(" after a tie break")
+            file.write("\n")
+            file.close()
         else:
             no_win = False
             print("-------------------------------------------")
             print(f"{username2} is the winner of this game.")
             print("-------------------------------------------")
+            file = open("scores.txt","a")
+            file.write(username2)
+            file.write(" scored ")
+            file.write(str(score2))
+            file.write(" points ")
+            file.write("on ")
+            file.write(game_date)
+            file.write(" after a tie break")
+            file.write("\n")
+            file.close()
 
 elif score1 > score2:
     print(f"{username1} is the winner of this game.")
     print("-------------------------------------------")
     file = open("scores.txt","a")
     file.write(username1)
-    file.write(" has ")
+    file.write(" scored ")
     file.write(str(score1))
-    file.write(" points")
+    file.write(" points ")
+    file.write("on ")
+    file.write(game_date)
     file.write("\n")
     file.close()
 else:
-    print(f"{players[1]} is the winner of this game.")
+    print(f"{username2} is the winner of this game.")
     print("-------------------------------------------")
     file = open("scores.txt","a")
     file.write(username2)
-    file.write(" has ")
+    file.write(" scored ")
     file.write(str(score2))
-    file.write(" points")
+    file.write(" points ")
+    file.write("on ")
+    file.write(game_date)
     file.write("\n")
     file.close()

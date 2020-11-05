@@ -1,2 +1,4 @@
-Balls has 4 points
-Balls has 24 points
+
+
+User scored 100 points on 05-Nov-2020 12:12:53 after a tie break
+User scored 100 points on 05-Nov-2020 12:31:55 after a tie break
