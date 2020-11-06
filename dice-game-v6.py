@@ -2,25 +2,42 @@ from random import randint
 from time import sleep
 from datetime import datetime
 from csv import DictWriter
-import sys
-# import operator
+from csv import reader
+from sys import exit
+from os.path import isfile
+from operator import itemgetter
 
 rounds = 0
 score1 = 0
 score2 = 0
 score1_tb = 0
 score2_tb = 0
-users = {"test": "1234", "tommy": "1234", "luke": "1234" }
+users = {"test": "1234", "tommy": "1234", "luke": "1234"}
 date = datetime.now()
-game_date = (date.strftime("%d-%b-%Y %H:%M:%S"))
-
+game_date = (date.strftime("%d-%b-%Y"))
 
 # ------------Welcome screen--------------------------------
-print("\n--------Welcome to Dice Game---------")
-print("1. Please enter 'n' to add new player")
-print("2. Please enter 'p' to play Dice Game")
-print("3. Please enter 's' to display scores")
-print("4. Please enter 'q' to quit game")
+if isfile("scores.csv"):
+    print("\n--------Welcome to Dice Game---------")
+    print("1. Please enter 'n' to add new player")
+    print("2. Please enter 'p' to play Dice Game")
+    print("3. Please enter 's' to display scores")
+    print("4. Please enter 'q' to quit game")
+else:
+    with open("scores.csv", "a") as file:
+        headers = ["Name", "Score", "Date"]
+        csv_writer = DictWriter(file, fieldnames=headers)
+        csv_writer.writeheader()
+        csv_writer.writerow({
+            "Name": username2,
+            "Score": score2,
+            "Date": game_date
+        })
+        print("\n--------Welcome to Dice Game---------")
+        print("1. Please enter 'n' to add new player")
+        print("2. Please enter 'p' to play Dice Game")
+        print("3. Please enter 's' to display top 5 scores")
+        print("4. Please enter 'q' to quit game")
 
 menu = input("\nPlease select option from menu: ").lower()
 while menu not in ["n", "p", "s", "q"]:
@@ -28,7 +45,18 @@ while menu not in ["n", "p", "s", "q"]:
 
 if menu == "q":
     print("You have ended the game")
-    sys.exit()
+    exit()
+
+if menu == "s":
+    with open("scores.csv") as file:
+        csv_reader = reader(file)
+        next(csv_reader)
+        print("\n*****************TOP FIVE PLAYERs***************")
+        print("*****Player****    ****Score****   ****Date*****\n")
+        scores = sorted(csv_reader, reverse=True, key=itemgetter(1))
+        for s in scores:
+            print(f"      {s[0]}             {s[1]}          {s[2]}")
+input("\nPress 'enter' to play Dice Game")
 
 if menu == "n":
     username = input("Please enter username: ")
@@ -56,7 +84,7 @@ while check_failed:
     print("Could player 1 enter their username and password")
     username1 = input("Please enter your username ")
     pword = input("Please enter your password ")
-    for u,p in users.items():
+    for u, p in users.items():
         if u == username1 and p == pword:
             username1 = username1.title()
             print(f"Player #1 is {username1}")
@@ -66,7 +94,7 @@ while check_failed:
                 print("Could player 2 enter their username and password")
                 username2 = input("Please enter your username ")
                 pword = input("Please enter your password ")
-                for u,p in users.items():
+                for u, p in users.items():
                     if u == username2 and p == pword:
                         username2 = username2.title()
                         print(f"Player #2 is {username2}")
@@ -106,17 +134,15 @@ while rounds < 1:
         print("Subtracting 5 points for odd total.")
     print(f"Round total is: {total}")
     # print(score1)
-    score1 += total
-    # score1 = 100
+    # score1 += total
+    score1 = 23
     print(f"Player score is: {score1}")
     print("-------------------------------------------")
     if score1 <= 0:
         print("-------------------------------------------")
         print(f"{username1} you have lost the game")
         print("-------------------------------------------")
-        sys.exit()
-
-
+        exit()
 
     # player 2
     input(f"\n{username2} hit 'enter' roll dice")
@@ -144,15 +170,15 @@ while rounds < 1:
         print("Subtracting 5 points for odd total.")
     print(f"Round total is: {total}")
     # print(score2)
-    score2 += total
-    # score2 = 100
+    # score2 += total
+    score2 = 45
     print(f"Player score is: {score2}")
     print("-------------------------------------------")
     if score2 <= 0:
         print("-------------------------------------------")
         print(f"{username2} you have lost the game")
         print("-------------------------------------------")
-        sys.exit()
+        exit()
     rounds += 1
 
 
@@ -193,16 +219,15 @@ if score1 == score2:
             print("-------------------------------------------")
             print(f"{username1} you have lost the game")
             print("-------------------------------------------")
-            with open("scores.csv", "w") as file:
-              headers = ["Name", "Score", "Date"]
-              csv_writer = DictWriter(file, fieldnames=headers)
-              csv_writer.writeheader()
-              csv_writer.writerow({
-                "Name": username2,
-                "Score": score1,
-                "date": game_date
-              })
-              sys.exit()
+            with open("scores.csv", "a") as file:
+                headers = ["Name", "Score", "Date"]
+                csv_writer = DictWriter(file, fieldnames=headers)
+                csv_writer.writerow({
+                    "Name": username2,
+                    "Score": score2,
+                    "Date": game_date
+                })
+                exit()
 
         input(f"\n{username2} hit 'enter' roll dice")
         print("\nrolling......")
@@ -224,17 +249,15 @@ if score1 == score2:
             print("-------------------------------------------")
             print(f"{username2} you have lost the game")
             print("-------------------------------------------")
-            file = open("scores.txt","a")
-            file.write(username1)
-            file.write(" scored ")
-            file.write(str(score2))
-            file.write(" points ")
-            file.write("on ")
-            file.write(game_date)
-            file.write(" after a tie break")
-            file.write("\n")
-            file.close()
-            sys.exit()
+            with open("scores.csv", "a") as file:
+                headers = ["Name", "Score", "Date"]
+                csv_writer = DictWriter(file, fieldnames=headers)
+                csv_writer.writerow({
+                    "Name": username1,
+                    "Score": score1,
+                    "Date": game_date
+                })
+                exit()
         if score1_tb == score2_tb:
             print("-------------------------------------------")
             print("Still no winner you will have to roll again")
@@ -244,53 +267,51 @@ if score1 == score2:
             print("-------------------------------------------")
             print(f"{username1} has won the Tie Break.")
             print("-------------------------------------------")
-            file = open("scores.txt","a")
-            file.write(username1)
-            file.write(" scored ")
-            file.write(str(score1))
-            file.write(" points ")
-            file.write("on ")
-            file.write(game_date)
-            file.write(" after a tie break")
-            file.write("\n")
-            file.close()
+            with open("scores.csv", "a") as file:
+                headers = ["Name", "Score", "Date"]
+                csv_writer = DictWriter(file, fieldnames=headers)
+                csv_writer.writerow({
+                    "Name": username1,
+                    "Score": score1,
+                    "Date": game_date
+                })
+                sys.exit()
         else:
             no_win = False
             print("-------------------------------------------")
             print(f"{username2} has won the Tie Break.")
             print("-------------------------------------------")
-            file = open("scores.txt","a")
-            file.write(username2)
-            file.write(" scored ")
-            file.write(str(score2))
-            file.write(" points ")
-            file.write("on ")
-            file.write(game_date)
-            file.write(" after a tie break")
-            file.write("\n")
-            file.close()
+            with open("scores.csv", "a") as file:
+                headers = ["Name", "Score", "Date"]
+                csv_writer = DictWriter(file, fieldnames=headers)
+                csv_writer.writerow({
+                    "Name": username2,
+                    "Score": score2,
+                    "Date": game_date
+                })
+                exit()
 
 elif score1 > score2:
     print(f"{username1} is the winner of this game.")
     print("-------------------------------------------")
-    file = open("scores.txt","a")
-    file.write(username1)
-    file.write(" scored ")
-    file.write(str(score1))
-    file.write(" points ")
-    file.write("on ")
-    file.write(game_date)
-    file.write("\n")
-    file.close()
+    with open("scores.csv", "a") as file:
+        headers = ["Name", "Score", "Date"]
+        csv_writer = DictWriter(file, fieldnames=headers)
+        csv_writer.writerow({
+            "Name": username1,
+            "Score": score1,
+            "Date": game_date
+        })
+        exit()
 else:
     print(f"{username2} is the winner of this game.")
     print("-------------------------------------------")
-    file = open("scores.txt","a")
-    file.write(username2)
-    file.write(" scored ")
-    file.write(str(score2))
-    file.write(" points ")
-    file.write("on ")
-    file.write(game_date)
-    file.write("\n")
-    file.close()
+    with open("scores.csv", "a") as file:
+        headers = ["Name", "Score", "Date"]
+        csv_writer = DictWriter(file, fieldnames=headers)
+        csv_writer.writerow({
+            "Name": username2,
+            "Score": score2,
+            "Date": game_date
+        })
+        exit()

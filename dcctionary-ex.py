@@ -7,10 +7,12 @@ cat = {"name": "blue", "age": 3.5, "is_cute": True}
 cat = dict(name="blue", age=3.5, is_cute=True)
 
 username = "balls"
-password = "1234"
+pword2 = "1234"
 
-balls = dict(username=username, password=password)
+balls = dict(username=username, password=pword2)
 
+users = []
+users.append(dict(username=username, password=pword2))
 
 # Acessing date in a dictionary
 cat[name]
