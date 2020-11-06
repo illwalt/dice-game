@@ -29,9 +29,9 @@ else:
         csv_writer = DictWriter(file, fieldnames=headers)
         csv_writer.writeheader()
         csv_writer.writerow({
-            "Name": username2,
-            "Score": score2,
-            "Date": game_date
+            "Name": "Raylin",
+            "Score": "77",
+            "Date": "06-Nov-2020"
         })
         print("\n--------Welcome to Dice Game---------")
         print("1. Please enter 'n' to add new player")
