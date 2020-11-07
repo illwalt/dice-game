@@ -1,8 +1,7 @@
 from random import randint
 from time import sleep
 from datetime import datetime
-from csv import DictWriter
-from csv import reader
+from csv import reader, DictWriter
 from sys import exit
 from os.path import isfile
 from operator import itemgetter
@@ -51,11 +50,12 @@ if menu == "s":
     with open("scores.csv") as file:
         csv_reader = reader(file)
         next(csv_reader)
-        print("\n*****************TOP FIVE PLAYERs***************")
-        print("*****Player****    ****Score****   ****Date*****\n")
+        print("\n*****************TOP FIVE PLAYERS***************")
+        print("*****Player****    ****Score****   \t****Date*****\n")
         scores = sorted(csv_reader, reverse=True, key=itemgetter(1))
-        for s in scores:
-            print(f"      {s[0]}             {s[1]}          {s[2]}")
+        top = scores[:5]
+        for t in top:
+            print(f"{t[0]}\t\t\t{t[1]}\t\t{t[2]}")
 input("\nPress 'enter' to play Dice Game")
 
 if menu == "n":
@@ -72,7 +72,7 @@ if menu == "n":
             print("Passwords did noy match")
             pword2 = input("Enter password again: ")
             if pword2 == correct_pword:
-                print("Correct password has been entered")
+                # print("Correct password has been entered")
                 print("User account successfully created")
                 users[username] = pword2
                 input("\nPress 'enter' to play Dice Game")
@@ -81,7 +81,7 @@ if menu == "n":
 
 check_failed = True
 while check_failed:
-    print("Could player 1 enter their username and password")
+    print("Player 1 enter their username and password")
     username1 = input("Please enter your username ")
     pword = input("Please enter your password ")
     for u, p in users.items():
@@ -91,7 +91,7 @@ while check_failed:
             check_failed = False
             check_failed = True
             while check_failed:
-                print("Could player 2 enter their username and password")
+                print("Player 2 enter their username and password")
                 username2 = input("Please enter your username ")
                 pword = input("Please enter your password ")
                 for u, p in users.items():
