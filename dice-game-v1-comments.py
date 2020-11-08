@@ -1,3 +1,4 @@
+# builtin fuction that need to be called
 from random import randint
 from time import sleep
 from datetime import datetime
@@ -54,7 +55,10 @@ else:
         print("3. Please enter 'S' to display top 5 players")
         print("4. Please enter 'Q' to quit game")
 
+# if you thpe capital letter it will set to lower case3go
 menu = input("\nPlease select option from menu: ").lower()
+# checks that user has selected valid option from menu.
+# while loop will run till valid option selected.
 while menu not in ["n", "p", "s", "q"]:
     print(f"\n{menu}: is not a valid option ")
     menu = input("\nPlease select option from menu: ").lower()
@@ -73,9 +77,11 @@ if menu == "s":
         print("\n*****************TOP FIVE PLAYERS***************")
         print("*****Player****    ****Score****   \t****Date*****\n")
         # sorts the scores list in descending order
+        # itemgetter used to pick point to sort om
         scores = sorted(csv_reader, reverse=True, key=itemgetter(1))
-
-        top = scores[:5]
+        # slices scores list with onlu top five scores
+        top = scores[0:5]
+        # goes throught the list of scores and prints the top 5 players
         for t in top:
             print(f"{t[0]}\t\t\t{t[1]}\t\t{t[2]}")
 
@@ -85,13 +91,19 @@ if menu == "n":
     username = input("Please enter username: ")
     pword1 = input("Please enter password: ")
     pword2 = input("Please re-enter password: ")
+    # compares password1 to password2 to see if the match
     if pword1 == pword2:
+        # if the match prints account created
         print("-------------------------------------------")
         print("User account successfully created")
         print("-------------------------------------------")
+        # saves user to users dictionary
         users[username] = pword2
         input("\nPress 'enter' to play Dice Game")
+    # if password1 and password2 dont match it take password one as
+    # the correct password and asks for password2 again
     if pword1 != pword2:
+        # takes password1 as correct password
         correct_pword = (pword1)
         # while True:
         print("Passwords did not match")
@@ -167,7 +179,7 @@ while rounds < 1:
     print(f"Round total is: {total}")
     # print(score1)
     # score1 += total
-    score1 = 23
+    score1 = 100
     print(f"Player score is: {score1}")
     print("-------------------------------------------")
     if score1 <= 0:
@@ -204,7 +216,7 @@ while rounds < 1:
     print(f"Round total is: {total}")
     # print(score2)
     # score2 += total
-    score2 = 45
+    score2 = 100
     print(f"Player score is: {score2}")
     print("-------------------------------------------")
     if score2 <= 0:
